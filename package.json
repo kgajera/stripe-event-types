@@ -1,0 +1,42 @@
+{
+  "name": "stripe-event-types",
+  "version": "0.1.0",
+  "description": "TypeScript typings for Stripe webhook events",
+  "keywords": [
+    "stripe"
+  ],
+  "scripts": {
+    "build": "ts-node scripts/generate.ts"
+  },
+  "author": {
+    "name": "Kishan Gajera",
+    "url": "http://github.com/kgajera"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kgajera/stripe-event-types.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kgajera/stripe-event-types/issues"
+  },
+  "license": "MIT",
+  "types": "index.d.ts",
+  "files": [
+    "index.d.ts",
+    "LICENSE",
+    "README.md"
+  ],
+  "devDependencies": {
+    "@tsconfig/node18": "^1.0.1",
+    "@types/lodash": "^4.14.184",
+    "@types/prettier": "^2.7.0",
+    "lodash": "^4.17.21",
+    "prettier": "^2.7.1",
+    "puppeteer": "^16.2.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.7.4"
+  },
+  "peerDependencies": {
+    "stripe": ">=10.0.0"
+  }
+}
