@@ -22,9 +22,9 @@ yarn add stripe-event-types
 When constructing the webhook event, cast it to `Stripe.DiscriminatedEvent` to strongly type the `event.type` and `event.data.object` fields:
 
 ```diff
-+/// <reference types="stripe-event-types" />
++import "stripe-event-types";
 
-const event = req.stripe.webhooks.constructEvent(
+const event = stripe.webhooks.constructEvent(
   request.body,
   request.headers['stripe-signature'],
   'whsec_test'
@@ -37,7 +37,7 @@ const event = req.stripe.webhooks.constructEvent(
 The `Stripe.DiscriminatedEvent.Type` type is a string literal of all event types:
 
 ```ts
-/// <reference types="stripe-event-types" />
+import "stripe-event-types";
 
 const type: Stripe.DiscriminatedEvent.Type = 'charge.succeeded';
 ```
