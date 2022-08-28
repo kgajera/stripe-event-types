@@ -275,6 +275,7 @@ declare module "stripe" {
           | "account.application.deauthorized";
         data: DiscriminatedEvent.Data<"application">;
       }
+
       interface AccountExternalAccountEvent extends Stripe.Event {
         type:
           | "account.external_account.created"
@@ -282,40 +283,49 @@ declare module "stripe" {
           | "account.external_account.updated";
         data: DiscriminatedEvent.Data<Stripe.Card | Stripe.BankAccount>;
       }
+
       interface AccountEvent extends Stripe.Event {
         type: "account.updated";
         data: DiscriminatedEvent.Data<Stripe.Account>;
       }
+
       interface ApplicationFeeRefundEvent extends Stripe.Event {
         type: "application_fee.refund.updated";
         data: DiscriminatedEvent.Data<Stripe.FeeRefund>;
       }
+
       interface ApplicationFeeEvent extends Stripe.Event {
         type: "application_fee.created" | "application_fee.refunded";
         data: DiscriminatedEvent.Data<Stripe.ApplicationFee>;
       }
+
       interface BalanceEvent extends Stripe.Event {
         type: "balance.available";
         data: DiscriminatedEvent.Data<Stripe.Balance>;
       }
+
       interface BillingPortalConfigurationEvent extends Stripe.Event {
         type:
           | "billing_portal.configuration.created"
           | "billing_portal.configuration.updated";
         data: DiscriminatedEvent.Data<Stripe.BillingPortal.Configuration>;
       }
+
       interface BillingPortalSessionEvent extends Stripe.Event {
         type: "billing_portal.session.created";
         data: DiscriminatedEvent.Data<Stripe.BillingPortal.Session>;
       }
+
       interface CapabilityEvent extends Stripe.Event {
         type: "capability.updated";
         data: DiscriminatedEvent.Data<Stripe.Capability>;
       }
+
       interface CashBalanceEvent extends Stripe.Event {
         type: "cash_balance.funds_available";
         data: DiscriminatedEvent.Data<Stripe.CashBalance>;
       }
+
       interface ChargeDisputeEvent extends Stripe.Event {
         type:
           | "charge.dispute.closed"
@@ -325,10 +335,12 @@ declare module "stripe" {
           | "charge.dispute.updated";
         data: DiscriminatedEvent.Data<Stripe.Dispute>;
       }
+
       interface ChargeRefundEvent extends Stripe.Event {
         type: "charge.refund.updated";
         data: DiscriminatedEvent.Data<Stripe.Refund>;
       }
+
       interface ChargeEvent extends Stripe.Event {
         type:
           | "charge.captured"
@@ -340,6 +352,7 @@ declare module "stripe" {
           | "charge.updated";
         data: DiscriminatedEvent.Data<Stripe.Charge>;
       }
+
       interface CheckoutSessionEvent extends Stripe.Event {
         type:
           | "checkout.session.async_payment_failed"
@@ -348,10 +361,12 @@ declare module "stripe" {
           | "checkout.session.expired";
         data: DiscriminatedEvent.Data<Stripe.Checkout.Session>;
       }
+
       interface CouponEvent extends Stripe.Event {
         type: "coupon.created" | "coupon.deleted" | "coupon.updated";
         data: DiscriminatedEvent.Data<Stripe.Coupon>;
       }
+
       interface CreditNoteEvent extends Stripe.Event {
         type:
           | "credit_note.created"
@@ -359,6 +374,7 @@ declare module "stripe" {
           | "credit_note.voided";
         data: DiscriminatedEvent.Data<Stripe.CreditNote>;
       }
+
       interface CustomerDiscountEvent extends Stripe.Event {
         type:
           | "customer.discount.created"
@@ -366,6 +382,7 @@ declare module "stripe" {
           | "customer.discount.updated";
         data: DiscriminatedEvent.Data<Stripe.Discount>;
       }
+
       interface CustomerSourceEvent extends Stripe.Event {
         type:
           | "customer.source.created"
@@ -374,6 +391,7 @@ declare module "stripe" {
           | "customer.source.updated";
         data: DiscriminatedEvent.Data<Stripe.Card>;
       }
+
       interface CustomerSubscriptionEvent extends Stripe.Event {
         type:
           | "customer.subscription.created"
@@ -384,6 +402,7 @@ declare module "stripe" {
           | "customer.subscription.updated";
         data: DiscriminatedEvent.Data<Stripe.Subscription>;
       }
+
       interface CustomerTaxIdEvent extends Stripe.Event {
         type:
           | "customer.tax_id.created"
@@ -391,18 +410,22 @@ declare module "stripe" {
           | "customer.tax_id.updated";
         data: DiscriminatedEvent.Data<Stripe.TaxId>;
       }
+
       interface CustomerEvent extends Stripe.Event {
         type: "customer.created" | "customer.deleted" | "customer.updated";
         data: DiscriminatedEvent.Data<Stripe.Customer>;
       }
+
       interface CustomerCashBalanceTransactionEvent extends Stripe.Event {
         type: "customer_cash_balance_transaction.created";
         data: DiscriminatedEvent.Data<Stripe.CustomerCashBalanceTransaction>;
       }
+
       interface FileEvent extends Stripe.Event {
         type: "file.created";
         data: DiscriminatedEvent.Data<Stripe.File>;
       }
+
       interface FinancialConnectionsAccountEvent extends Stripe.Event {
         type:
           | "financial_connections.account.created"
@@ -412,6 +435,7 @@ declare module "stripe" {
           | "financial_connections.account.refreshed_balance";
         data: DiscriminatedEvent.Data<Stripe.Account>;
       }
+
       interface IdentityVerificationSessionEvent extends Stripe.Event {
         type:
           | "identity.verification_session.canceled"
@@ -422,6 +446,7 @@ declare module "stripe" {
           | "identity.verification_session.verified";
         data: DiscriminatedEvent.Data<Stripe.Identity.VerificationSession>;
       }
+
       interface InvoiceEvent extends Stripe.Event {
         type:
           | "invoice.created"
@@ -439,6 +464,7 @@ declare module "stripe" {
           | "invoice.voided";
         data: DiscriminatedEvent.Data<Stripe.Invoice>;
       }
+
       interface InvoiceitemEvent extends Stripe.Event {
         type:
           | "invoiceitem.created"
@@ -446,6 +472,7 @@ declare module "stripe" {
           | "invoiceitem.updated";
         data: DiscriminatedEvent.Data<Stripe.InvoiceItem>;
       }
+
       interface IssuingAuthorizationEvent extends Stripe.Event {
         type:
           | "issuing_authorization.created"
@@ -453,14 +480,17 @@ declare module "stripe" {
           | "issuing_authorization.updated";
         data: DiscriminatedEvent.Data<Stripe.Issuing.Authorization>;
       }
+
       interface IssuingCardEvent extends Stripe.Event {
         type: "issuing_card.created" | "issuing_card.updated";
         data: DiscriminatedEvent.Data<Stripe.Issuing.Card>;
       }
+
       interface IssuingCardholderEvent extends Stripe.Event {
         type: "issuing_cardholder.created" | "issuing_cardholder.updated";
         data: DiscriminatedEvent.Data<Stripe.Issuing.Cardholder>;
       }
+
       interface IssuingDisputeEvent extends Stripe.Event {
         type:
           | "issuing_dispute.closed"
@@ -470,18 +500,22 @@ declare module "stripe" {
           | "issuing_dispute.updated";
         data: DiscriminatedEvent.Data<Stripe.Issuing.Dispute>;
       }
+
       interface IssuingTransactionEvent extends Stripe.Event {
         type: "issuing_transaction.created" | "issuing_transaction.updated";
         data: DiscriminatedEvent.Data<Stripe.Issuing.Transaction>;
       }
+
       interface MandateEvent extends Stripe.Event {
         type: "mandate.updated";
         data: DiscriminatedEvent.Data<Stripe.Mandate>;
       }
+
       interface OrderEvent extends Stripe.Event {
         type: "order.created";
         data: DiscriminatedEvent.Data<Stripe.Order>;
       }
+
       interface PaymentIntentEvent extends Stripe.Event {
         type:
           | "payment_intent.amount_capturable_updated"
@@ -494,10 +528,12 @@ declare module "stripe" {
           | "payment_intent.succeeded";
         data: DiscriminatedEvent.Data<Stripe.PaymentIntent>;
       }
+
       interface PaymentLinkEvent extends Stripe.Event {
         type: "payment_link.created" | "payment_link.updated";
         data: DiscriminatedEvent.Data<Stripe.PaymentLink>;
       }
+
       interface PaymentMethodEvent extends Stripe.Event {
         type:
           | "payment_method.attached"
@@ -506,6 +542,7 @@ declare module "stripe" {
           | "payment_method.updated";
         data: DiscriminatedEvent.Data<Stripe.PaymentMethod>;
       }
+
       interface PayoutEvent extends Stripe.Event {
         type:
           | "payout.canceled"
@@ -515,26 +552,32 @@ declare module "stripe" {
           | "payout.updated";
         data: DiscriminatedEvent.Data<Stripe.Payout>;
       }
+
       interface PersonEvent extends Stripe.Event {
         type: "person.created" | "person.deleted" | "person.updated";
         data: DiscriminatedEvent.Data<Stripe.Person>;
       }
+
       interface PlanEvent extends Stripe.Event {
         type: "plan.created" | "plan.deleted" | "plan.updated";
         data: DiscriminatedEvent.Data<Stripe.Plan>;
       }
+
       interface PriceEvent extends Stripe.Event {
         type: "price.created" | "price.deleted" | "price.updated";
         data: DiscriminatedEvent.Data<Stripe.Price>;
       }
+
       interface ProductEvent extends Stripe.Event {
         type: "product.created" | "product.deleted" | "product.updated";
         data: DiscriminatedEvent.Data<Stripe.Product>;
       }
+
       interface PromotionCodeEvent extends Stripe.Event {
         type: "promotion_code.created" | "promotion_code.updated";
         data: DiscriminatedEvent.Data<Stripe.PromotionCode>;
       }
+
       interface QuoteEvent extends Stripe.Event {
         type:
           | "quote.accepted"
@@ -543,28 +586,34 @@ declare module "stripe" {
           | "quote.finalized";
         data: DiscriminatedEvent.Data<Stripe.Quote>;
       }
+
       interface RadarEarlyFraudWarningEvent extends Stripe.Event {
         type:
           | "radar.early_fraud_warning.created"
           | "radar.early_fraud_warning.updated";
         data: DiscriminatedEvent.Data<Stripe.Radar.EarlyFraudWarning>;
       }
+
       interface RecipientEvent extends Stripe.Event {
         type: "recipient.created" | "recipient.deleted" | "recipient.updated";
         data: DiscriminatedEvent.Data<Stripe.Event.Data>;
       }
+
       interface ReportingReportRunEvent extends Stripe.Event {
         type: "reporting.report_run.failed" | "reporting.report_run.succeeded";
         data: DiscriminatedEvent.Data<Stripe.Reporting.ReportRun>;
       }
+
       interface ReportingReportTypeEvent extends Stripe.Event {
         type: "reporting.report_type.updated";
         data: DiscriminatedEvent.Data<Stripe.Reporting.ReportType>;
       }
+
       interface ReviewEvent extends Stripe.Event {
         type: "review.closed" | "review.opened";
         data: DiscriminatedEvent.Data<Stripe.Review>;
       }
+
       interface SetupIntentEvent extends Stripe.Event {
         type:
           | "setup_intent.canceled"
@@ -574,18 +623,22 @@ declare module "stripe" {
           | "setup_intent.succeeded";
         data: DiscriminatedEvent.Data<Stripe.SetupIntent>;
       }
+
       interface SigmaScheduledQueryRunEvent extends Stripe.Event {
         type: "sigma.scheduled_query_run.created";
         data: DiscriminatedEvent.Data<Stripe.Sigma.ScheduledQueryRun>;
       }
+
       interface SkuEvent extends Stripe.Event {
         type: "sku.created" | "sku.deleted" | "sku.updated";
         data: DiscriminatedEvent.Data<Stripe.Sku>;
       }
+
       interface SourceTransactionEvent extends Stripe.Event {
         type: "source.transaction.created" | "source.transaction.updated";
         data: DiscriminatedEvent.Data<Stripe.SourceTransaction>;
       }
+
       interface SourceEvent extends Stripe.Event {
         type:
           | "source.canceled"
@@ -595,6 +648,7 @@ declare module "stripe" {
           | "source.refund_attributes_required";
         data: DiscriminatedEvent.Data<Stripe.Card>;
       }
+
       interface SubscriptionScheduleEvent extends Stripe.Event {
         type:
           | "subscription_schedule.aborted"
@@ -606,16 +660,19 @@ declare module "stripe" {
           | "subscription_schedule.updated";
         data: DiscriminatedEvent.Data<Stripe.SubscriptionSchedule>;
       }
+
       interface TaxRateEvent extends Stripe.Event {
         type: "tax_rate.created" | "tax_rate.updated";
         data: DiscriminatedEvent.Data<Stripe.TaxRate>;
       }
+
       interface TerminalReaderEvent extends Stripe.Event {
         type:
           | "terminal.reader.action_failed"
           | "terminal.reader.action_succeeded";
         data: DiscriminatedEvent.Data<Stripe.Terminal.Reader>;
       }
+
       interface TestHelpersTestClockEvent extends Stripe.Event {
         type:
           | "test_helpers.test_clock.advancing"
@@ -625,6 +682,7 @@ declare module "stripe" {
           | "test_helpers.test_clock.ready";
         data: DiscriminatedEvent.Data<Stripe.TestHelpers.TestClock>;
       }
+
       interface TopupEvent extends Stripe.Event {
         type:
           | "topup.canceled"
@@ -634,6 +692,7 @@ declare module "stripe" {
           | "topup.succeeded";
         data: DiscriminatedEvent.Data<Stripe.Topup>;
       }
+
       interface TransferEvent extends Stripe.Event {
         type: "transfer.created" | "transfer.reversed" | "transfer.updated";
         data: DiscriminatedEvent.Data<Stripe.Transfer>;

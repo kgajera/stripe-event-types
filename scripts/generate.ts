@@ -78,7 +78,7 @@ const EVENTS_WITH_API_EVENT_PATH = ["billing_portal", "checkout"];
                 data: DiscriminatedEvent.Data<${flatTree[e].objectType}>
               }`
               )
-              .join("\n")}
+              .join("\n\n")}
 
           }
         }
@@ -226,18 +226,19 @@ async function scrapeEvents(): Promise<StripeDocsEventScrape[]> {
         const detailElement = element.querySelector(
           ".method-list-item-label-details"
         );
-        let objectLinks: any[] = [];
+        let objectTypes: string[] = [];
 
         if (detailElement) {
-          objectLinks = Array.from(
+          objectTypes = Array.from(
             detailElement.querySelectorAll(".docs-link"),
             (e) => e.textContent
-          );
+          ) as string[];
 
-          if (!objectLinks.length) {
-            const strings = detailElement.textContent?.match(/"(.*?)"/g);
-            if (strings?.length) {
-              objectLinks.push(...strings);
+          if (!objectTypes.length) {
+            // If no links were found, attempt to find string value enclosed in quotes
+            const stringTypes = detailElement.textContent?.match(/"(.*?)"/g);
+            if (stringTypes?.length) {
+              objectTypes.push(...stringTypes);
             }
           }
         }
@@ -246,7 +247,7 @@ async function scrapeEvents(): Promise<StripeDocsEventScrape[]> {
           type:
             element.querySelector(".method-list-item-label-name")
               ?.textContent || "",
-          objectTypes: objectLinks,
+          objectTypes,
         };
       }
     )
