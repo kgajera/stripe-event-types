@@ -1,12 +1,7 @@
 {
   "extends": "@tsconfig/node18/tsconfig.json",
   "compilerOptions": {
-    "lib": [
-      "es2022",
-      "DOM"
-    ],
+    "lib": ["es2022", "DOM"]
   },
-  "include": [
-    "scripts/**/*.ts"
-  ]
+  "include": ["scripts/**/*.ts"]
 }

@@ -39,5 +39,5 @@ The `Stripe.DiscriminatedEvent.Type` type is a string literal of all event types
 ```ts
 import "stripe-event-types";
 
-const type: Stripe.DiscriminatedEvent.Type = 'charge.succeeded';
+const type: Stripe.DiscriminatedEvent.Type = "charge.succeeded";
 ```
