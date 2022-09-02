@@ -17,6 +17,15 @@ interface EventTree {
   _objectTypes?: string[];
 }
 
+type FlatTree = Record<
+  string,
+  {
+    eventType: string;
+    interfaceName: string;
+    objectType: string;
+  }
+>;
+
 /**
  * If the event type is prefixed with one these names, it
  * is a nested API/type in the Stripe client
@@ -125,8 +134,8 @@ function buildEventTree(events: StripeDocsEventScrape[]): EventTree {
  * @param tree - Hierarchical tree of events
  * @param paths - Parent path(s)
  */
-function buildFlatEventTree(tree: EventTree, paths: string[] = []) {
-  const result: any = {};
+function buildFlatEventTree(tree: EventTree, paths: string[] = []): FlatTree {
+  const flatTree: FlatTree = {};
   const leafNames: string[] = [];
   let objectTypes: string[] = [];
 
@@ -138,7 +147,7 @@ function buildFlatEventTree(tree: EventTree, paths: string[] = []) {
       objectTypes = o._objectTypes || [];
     } else {
       Object.assign(
-        result,
+        flatTree,
         buildFlatEventTree(tree[key] as EventTree, [...paths, key])
       );
     }
@@ -147,7 +156,7 @@ function buildFlatEventTree(tree: EventTree, paths: string[] = []) {
   if (leafNames.length) {
     const eventPrefix = paths.join(".");
 
-    result[eventPrefix] = {
+    flatTree[eventPrefix] = {
       objectType: objectTypes
         .map((o: string) =>
           translateObjectDescriptionToTypeScriptType(o, paths)
@@ -160,7 +169,7 @@ function buildFlatEventTree(tree: EventTree, paths: string[] = []) {
     };
   }
 
-  return result;
+  return flatTree;
 }
 
 function format(content: string) {
