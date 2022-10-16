@@ -5,6 +5,8 @@ on:
     branches:
       - main
   pull_request:
+  schedule:
+    - cron: "0 0 * * *"
 
 jobs:
   build:
@@ -17,3 +19,4 @@ jobs:
           node-version: 18
       - run: npm ci
       - run: npm run build
+      - run: git diff --exit-code index.d.ts
