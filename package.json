@@ -12,6 +12,7 @@
     "name": "Kishan Gajera",
     "url": "http://github.com/kgajera"
   },
+  "homepage": "https://kgajera.github.io/stripe-event-types",
   "repository": {
     "type": "git",
     "url": "https://github.com/kgajera/stripe-event-types.git"
