@@ -21,22 +21,3 @@
 [data-theme="dark"] {
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 }
-
-.hero {
-  color: #fff;
-}
-
-.hero code {
-  background-color: var(--ifm-color-primary-lightest);
-  color: #000;
-  font-size: 16px;
-}
-
-.install-command {
-  font-size: 20px;
-  user-select: all;
-}
-
-.text-center {
-  text-align: center;
-}

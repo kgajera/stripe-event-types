@@ -52,7 +52,7 @@ const config = {
       navbar: {
         title: "stripe-event-types",
         logo: {
-          alt: 'Logo',
+          alt: "Logo",
           src: "/img/logo.svg",
         },
         items: [
