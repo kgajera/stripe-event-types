@@ -47,6 +47,7 @@ declare module "stripe" {
       | DiscriminatedEvent.QuoteEvent
       | DiscriminatedEvent.RadarEarlyFraudWarningEvent
       | DiscriminatedEvent.RecipientEvent
+      | DiscriminatedEvent.RefundEvent
       | DiscriminatedEvent.ReportingReportRunEvent
       | DiscriminatedEvent.ReportingReportTypeEvent
       | DiscriminatedEvent.ReviewEvent
@@ -211,6 +212,8 @@ declare module "stripe" {
         | "recipient.created"
         | "recipient.deleted"
         | "recipient.updated"
+        | "refund.created"
+        | "refund.updated"
         | "reporting.report_run.failed"
         | "reporting.report_run.succeeded"
         | "reporting.report_type.updated"
@@ -597,6 +600,11 @@ declare module "stripe" {
       interface RecipientEvent extends Stripe.Event {
         type: "recipient.created" | "recipient.deleted" | "recipient.updated";
         data: DiscriminatedEvent.Data<Stripe.Event.Data>;
+      }
+
+      interface RefundEvent extends Stripe.Event {
+        type: "refund.created" | "refund.updated";
+        data: DiscriminatedEvent.Data<Stripe.Refund>;
       }
 
       interface ReportingReportRunEvent extends Stripe.Event {
