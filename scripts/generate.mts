@@ -1,7 +1,7 @@
 import { launch } from "puppeteer";
 import fs from "fs";
-import path from "path";
 import _ from "lodash";
+import path from "path";
 import prettier from "prettier";
 
 interface StripeDocsEventScrape {
@@ -26,75 +26,60 @@ type FlatTree = Record<
   }
 >;
 
-/**
- * If the event type is prefixed with one these names, it
- * is a nested API/type in the Stripe client
- */
-const EVENTS_WITH_API_PARENT = [
-  "identity",
-  "issuing",
-  "radar",
-  "reporting",
-  "sigma",
-  "terminal",
-  "test_helpers",
-];
+interface TypingTree {
+  [key: string]: null | TypingTree;
+}
 
-/**
- * If the event type is prefixed with one these names, use the dot
- * notation of the event type to construct the Stripe client type name
- */
-const EVENTS_WITH_API_EVENT_PATH = ["billing_portal", "checkout"];
+const TYPES_DIR = `node_modules/stripe/types`;
 
-(async () => {
-  const events = await scrapeEvents();
-  const eventTree = buildEventTree(events);
-  const flatTree = buildFlatEventTree(eventTree);
+const typingsTree = await buildTypingFilesTree();
+const events = await scrapeEvents();
+const eventTree = buildEventTree(events);
+const flatTree = buildFlatEventTree(eventTree);
 
-  fs.writeFileSync(
-    path.join("index.d.ts"),
-    format(`
-      declare module "stripe" {
-        namespace Stripe {
-          type DiscriminatedEvent = ${Object.keys(flatTree)
-            .map((g) => `DiscriminatedEvent.${flatTree[g].interfaceName}`)
-            .join(" | ")}
+await fs.promises.writeFile(
+  path.join("index.d.ts"),
+  format(`
+    declare module "stripe" {
+      namespace Stripe {
+        type DiscriminatedEvent = ${Object.keys(flatTree)
+          .map((g) => `DiscriminatedEvent.${flatTree[g].interfaceName}`)
+          .join(" | ")}
 
-          namespace DiscriminatedEvent {
+        namespace DiscriminatedEvent {
+          /**
+           * All possible event types: https://stripe.com/docs/api/events/types
+           */
+          type Type = ${events.map((e) => `'${e.type}'`).join(" | ")};
+
+          interface Data<T> {
             /**
-             * All possible event types: https://stripe.com/docs/api/events/types
+             * Object containing the API resource relevant to the event. For example, an \`invoice.created\` event will have a full [invoice object](https://stripe.com/docs/api#invoice_object) as the value of the object key.
              */
-            type Type = ${events.map((e) => `'${e.type}'`).join(" | ")};
+            object: T
 
-            interface Data<T> {
-              /**
-               * Object containing the API resource relevant to the event. For example, an \`invoice.created\` event will have a full [invoice object](https://stripe.com/docs/api#invoice_object) as the value of the object key.
-               */
-              object: T
-
-              /**
-               * Object containing the names of the attributes that have changed, and their previous values (sent along only with *.updated events).
-               */
-              previous_attributes?: Partial<T>
-            }
-
-            ${Object.keys(flatTree)
-              .map(
-                (
-                  e
-                ) => `interface ${flatTree[e].interfaceName} extends Stripe.Event {
-                type: ${flatTree[e].eventType}
-                data: DiscriminatedEvent.Data<${flatTree[e].objectType}>
-              }`
-              )
-              .join("\n\n")}
-
+            /**
+             * Object containing the names of the attributes that have changed, and their previous values (sent along only with *.updated events).
+             */
+            previous_attributes?: Partial<T>
           }
+
+          ${Object.keys(flatTree)
+            .map(
+              (
+                e
+              ) => `interface ${flatTree[e].interfaceName} extends Stripe.Event {
+              type: ${flatTree[e].eventType}
+              data: DiscriminatedEvent.Data<${flatTree[e].objectType}>
+            }`
+            )
+            .join("\n\n")}
+
         }
       }
-    `)
-  );
-})();
+    }
+  `)
+);
 
 /**
  * Build a tree using the dot notation of the event type ("charge.succeeded")
@@ -172,6 +157,36 @@ function buildFlatEventTree(tree: EventTree, paths: string[] = []): FlatTree {
   return flatTree;
 }
 
+/**
+ * Builds a tree of of typing files in the `stripe` library
+ */
+async function buildTypingFilesTree(
+  paths?: string[],
+  dirPath: string = TYPES_DIR
+): Promise<TypingTree> {
+  const tree: TypingTree = {};
+
+  if (!paths) {
+    paths = await fs.promises.readdir(dirPath);
+  }
+
+  for (const p of paths) {
+    if (p.endsWith(".ts")) {
+      tree[p] = null;
+    }
+    // Rudimentary check to make sure the path is a directory
+    else if (p.indexOf(".") === -1) {
+      const nextPath = `${dirPath}/${p}`;
+      tree[p] = await buildTypingFilesTree(
+        await fs.promises.readdir(nextPath),
+        nextPath
+      );
+    }
+  }
+
+  return tree;
+}
+
 function format(content: string) {
   return prettier.format(content, { parser: "typescript" });
 }
@@ -192,31 +207,50 @@ function translateObjectDescriptionToTypeScriptType(
   objectDescription: string,
   paths: string[] = []
 ): string {
-  let parent = EVENTS_WITH_API_PARENT.includes(paths[0])
-    ? `${titleCase(paths[0])}`
-    : "";
-
+  // The event `object` type is a string, for example "application"
   if (objectDescription.match(/^"/)) {
-    // The event `object` type is a string, for example "application"
     return objectDescription;
-  } else if (EVENTS_WITH_API_EVENT_PATH.includes(paths[0])) {
-    // Use the dot notation of the event type to construct the TypeScript type
-    return `Stripe.${paths.map((p) => titleCase(p)).join(".")}`;
-  } else if (objectDescription === "invoiceitem") {
-    // Inconsistent casing in event type and Stripe TypeScript type
-    objectDescription = "InvoiceItem";
-  } else if (objectDescription.match(/^issuing/i)) {
-    // Inconsistent naming for the events that start with "issuing_" and their Stripe TypeScript type
-    objectDescription = objectDescription.replace(/^issuing/i, "");
-    parent = "Issuing";
-  } else if (objectDescription.match(/^recipient/i)) {
-    // The `Stripe.Recipient` type has been removed in v10.0.0
+  }
+  // There are issues finding the typings file due to pluralization
+  else if (objectDescription === "capability") {
+    return "Stripe.Capability";
+  }
+
+  // The "issuing" event naming pattern is inconsistent, uses underscore instead of dot for separator
+  if (objectDescription.match(/^issuing/i)) {
+    objectDescription = "issuing";
+    paths = paths[0].split("_");
+  }
+
+  function traverseTypings(
+    typings = typingsTree,
+    maybeType = objectDescription.replace(/\s+/g, ""),
+    typeParents: string[] = []
+  ): string {
+    for (const file of Object.keys(typings)) {
+      const fileRegex = new RegExp(`^(${maybeType})(s|es|)?\.d\.ts$`, "i");
+      const fileMatch = file.match(fileRegex);
+
+      if (fileMatch) {
+        return `Stripe${
+          typeParents?.length ? `.${typeParents.join(".")}` : ""
+        }.${fileMatch[1]}`;
+      } else {
+        const dirRegex = new RegExp(`^(${paths[0].replace(/_/g, "")})$`, "i");
+        const dirMatch = file.match(dirRegex);
+
+        if (dirMatch) {
+          return traverseTypings(typings[file], paths[1].replace(/_/g, ""), [
+            ...typeParents,
+            file,
+          ]);
+        }
+      }
+    }
     return "Stripe.Event.Data";
   }
 
-  return `Stripe.${parent.length ? `${parent}.` : ""}${titleCase(
-    objectDescription
-  )}`;
+  return traverseTypings();
 }
 
 /**

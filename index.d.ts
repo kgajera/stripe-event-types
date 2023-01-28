@@ -516,7 +516,7 @@ declare module "stripe" {
 
       interface OrderEvent extends Stripe.Event {
         type: "order.created";
-        data: DiscriminatedEvent.Data<Stripe.Order>;
+        data: DiscriminatedEvent.Data<Stripe.Event.Data>;
       }
 
       interface PaymentIntentEvent extends Stripe.Event {
@@ -639,7 +639,7 @@ declare module "stripe" {
 
       interface SkuEvent extends Stripe.Event {
         type: "sku.created" | "sku.deleted" | "sku.updated";
-        data: DiscriminatedEvent.Data<Stripe.Sku>;
+        data: DiscriminatedEvent.Data<Stripe.Event.Data>;
       }
 
       interface SourceTransactionEvent extends Stripe.Event {

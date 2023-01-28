@@ -6,7 +6,7 @@
     "stripe"
   ],
   "scripts": {
-    "build": "ts-node scripts/generate.ts"
+    "build": "tsx scripts/generate.mts"
   },
   "author": {
     "name": "Kishan Gajera",
@@ -28,13 +28,13 @@
     "README.md"
   ],
   "devDependencies": {
-    "@tsconfig/node18": "^1.0.1",
     "@types/lodash": "^4.14.184",
     "@types/prettier": "^2.7.0",
     "lodash": "^4.17.21",
     "prettier": "^2.7.1",
     "puppeteer": "^16.2.0",
-    "ts-node": "^10.9.1",
+    "stripe": "^11.8.0",
+    "tsx": "^3.12.2",
     "typescript": "^4.7.4"
   },
   "peerDependencies": {
