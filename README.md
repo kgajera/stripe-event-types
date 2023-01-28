@@ -23,7 +23,7 @@ yarn add stripe-event-types
 
 | `stripe-event-types` version | `stripe` version |
 | ---------------------------- | ---------------- |
-| 1.2                          | 11               |
+| 2.0                          | 11               |
 | 1.0                          | 10               |
 
 ## Usage
