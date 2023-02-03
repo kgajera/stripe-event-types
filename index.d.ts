@@ -17,12 +17,12 @@ declare module "stripe" {
       | DiscriminatedEvent.CheckoutSessionEvent
       | DiscriminatedEvent.CouponEvent
       | DiscriminatedEvent.CreditNoteEvent
+      | DiscriminatedEvent.CustomerCashBalanceTransactionEvent
       | DiscriminatedEvent.CustomerDiscountEvent
       | DiscriminatedEvent.CustomerSourceEvent
       | DiscriminatedEvent.CustomerSubscriptionEvent
       | DiscriminatedEvent.CustomerTaxIdEvent
       | DiscriminatedEvent.CustomerEvent
-      | DiscriminatedEvent.CustomerCashBalanceTransactionEvent
       | DiscriminatedEvent.FileEvent
       | DiscriminatedEvent.FinancialConnectionsAccountEvent
       | DiscriminatedEvent.IdentityVerificationSessionEvent
@@ -68,15 +68,15 @@ declare module "stripe" {
        * All possible event types: https://stripe.com/docs/api/events/types
        */
       type Type =
-        | "account.updated"
         | "account.application.authorized"
         | "account.application.deauthorized"
         | "account.external_account.created"
         | "account.external_account.deleted"
         | "account.external_account.updated"
+        | "account.updated"
         | "application_fee.created"
-        | "application_fee.refunded"
         | "application_fee.refund.updated"
+        | "application_fee.refunded"
         | "balance.available"
         | "billing_portal.configuration.created"
         | "billing_portal.configuration.updated"
@@ -84,18 +84,18 @@ declare module "stripe" {
         | "capability.updated"
         | "cash_balance.funds_available"
         | "charge.captured"
-        | "charge.expired"
-        | "charge.failed"
-        | "charge.pending"
-        | "charge.refunded"
-        | "charge.succeeded"
-        | "charge.updated"
         | "charge.dispute.closed"
         | "charge.dispute.created"
         | "charge.dispute.funds_reinstated"
         | "charge.dispute.funds_withdrawn"
         | "charge.dispute.updated"
+        | "charge.expired"
+        | "charge.failed"
+        | "charge.pending"
         | "charge.refund.updated"
+        | "charge.refunded"
+        | "charge.succeeded"
+        | "charge.updated"
         | "checkout.session.async_payment_failed"
         | "checkout.session.async_payment_succeeded"
         | "checkout.session.completed"
@@ -106,9 +106,9 @@ declare module "stripe" {
         | "credit_note.created"
         | "credit_note.updated"
         | "credit_note.voided"
+        | "customer_cash_balance_transaction.created"
         | "customer.created"
         | "customer.deleted"
-        | "customer.updated"
         | "customer.discount.created"
         | "customer.discount.deleted"
         | "customer.discount.updated"
@@ -118,14 +118,16 @@ declare module "stripe" {
         | "customer.source.updated"
         | "customer.subscription.created"
         | "customer.subscription.deleted"
+        | "customer.subscription.paused"
         | "customer.subscription.pending_update_applied"
         | "customer.subscription.pending_update_expired"
+        | "customer.subscription.resumed"
         | "customer.subscription.trial_will_end"
         | "customer.subscription.updated"
         | "customer.tax_id.created"
         | "customer.tax_id.deleted"
         | "customer.tax_id.updated"
-        | "customer_cash_balance_transaction.created"
+        | "customer.updated"
         | "file.created"
         | "financial_connections.account.created"
         | "financial_connections.account.deactivated"
@@ -378,6 +380,11 @@ declare module "stripe" {
         data: DiscriminatedEvent.Data<Stripe.CreditNote>;
       }
 
+      interface CustomerCashBalanceTransactionEvent extends Stripe.Event {
+        type: "customer_cash_balance_transaction.created";
+        data: DiscriminatedEvent.Data<Stripe.CustomerCashBalanceTransaction>;
+      }
+
       interface CustomerDiscountEvent extends Stripe.Event {
         type:
           | "customer.discount.created"
@@ -399,8 +406,10 @@ declare module "stripe" {
         type:
           | "customer.subscription.created"
           | "customer.subscription.deleted"
+          | "customer.subscription.paused"
           | "customer.subscription.pending_update_applied"
           | "customer.subscription.pending_update_expired"
+          | "customer.subscription.resumed"
           | "customer.subscription.trial_will_end"
           | "customer.subscription.updated";
         data: DiscriminatedEvent.Data<Stripe.Subscription>;
@@ -417,11 +426,6 @@ declare module "stripe" {
       interface CustomerEvent extends Stripe.Event {
         type: "customer.created" | "customer.deleted" | "customer.updated";
         data: DiscriminatedEvent.Data<Stripe.Customer>;
-      }
-
-      interface CustomerCashBalanceTransactionEvent extends Stripe.Event {
-        type: "customer_cash_balance_transaction.created";
-        data: DiscriminatedEvent.Data<Stripe.CustomerCashBalanceTransaction>;
       }
 
       interface FileEvent extends Stripe.Event {
