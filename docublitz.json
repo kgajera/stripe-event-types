@@ -1,0 +1,15 @@
+{
+  "favicon": "https://raw.githubusercontent.com/kgajera/stripe-event-types/gh-pages-assets/favicon.ico",
+  "githubOwner": "kgajera",
+  "githubRepo": "stripe-event-types",
+  "installCommand": "npm install stripe-event-types",
+  "logo": "https://raw.githubusercontent.com/kgajera/stripe-event-types/gh-pages-assets/logo.svg",
+  "primaryColorDark": "#847eff",
+  "primaryColorLight": "#635bff",
+  "stackBlitzId": "stripe-event-types",
+  "stackBlitzEmbedOptions": {
+    "view": "editor"
+  },
+  "subheading": "Strongly type the <code>event.type</code> and <code>event.data.object</code> fields for better developer experience and implementation.",
+  "tagline": "TypeScript typings for Stripe webhook events"
+}

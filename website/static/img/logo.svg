@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<svg fill="none" height="512" viewBox="0 0 512 512" width="512" xmlns="http://www.w3.org/2000/svg">
-  <rect fill="#3178c6" height="512" rx="50" width="512"/>
-  <rect height="512" rx="50" width="512" style="fill: rgb(99, 91, 255);"/>
-  <text style="fill: rgb(255, 255, 255); font-family: Arial, sans-serif; font-size: 200px; font-weight: 700; white-space: pre;" x="80.716" y="447.671">SET</text>
-</svg>
