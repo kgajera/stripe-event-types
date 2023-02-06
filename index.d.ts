@@ -440,7 +440,7 @@ declare module "stripe" {
           | "financial_connections.account.disconnected"
           | "financial_connections.account.reactivated"
           | "financial_connections.account.refreshed_balance";
-        data: DiscriminatedEvent.Data<Stripe.Account>;
+        data: DiscriminatedEvent.Data<Stripe.FinancialConnections.Account>;
       }
 
       interface IdentityVerificationSessionEvent extends Stripe.Event {
