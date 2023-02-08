@@ -1,8 +1,9 @@
-import { launch } from "puppeteer";
+import axios from "axios";
 import fs from "fs";
 import _ from "lodash";
 import path from "path";
 import prettier from "prettier";
+import { launch } from "puppeteer";
 
 interface StripeDocsEventScrape {
   // Name of event, for example "charge.succeeded"
@@ -33,8 +34,21 @@ interface TypingTree {
 const TYPES_DIR = `node_modules/stripe/types`;
 
 const typingsTree = await buildTypingFilesTree();
-const events = await scrapeEvents();
-const eventTree = buildEventTree(events);
+const scrapedEvents = await scrapeEvents();
+const fullEventTypeList = await getOpenApiEventTypeList();
+const unscrapedEvents = _.pullAllWith(
+  fullEventTypeList,
+  scrapedEvents,
+  (a, b) => a == b.type
+);
+scrapedEvents.push(
+  ...unscrapedEvents.map((type) => ({
+    type,
+    objectTypes: [],
+  }))
+);
+
+const eventTree = buildEventTree(scrapedEvents);
 const flatTree = buildFlatEventTree(eventTree);
 
 await fs.promises.writeFile(
@@ -50,7 +64,7 @@ await fs.promises.writeFile(
           /**
            * All possible event types: https://stripe.com/docs/api/events/types
            */
-          type Type = ${events.map((e) => `'${e.type}'`).join(" | ")};
+          type Type = ${scrapedEvents.map((e) => `'${e.type}'`).join(" | ")};
 
           interface Data<T> {
             /**
@@ -142,7 +156,7 @@ function buildFlatEventTree(tree: EventTree, paths: string[] = []): FlatTree {
     const eventPrefix = paths.join(".");
 
     flatTree[eventPrefix] = {
-      objectType: objectTypes
+      objectType: (objectTypes.length ? objectTypes : [paths[0]])
         .map((o: string) =>
           translateObjectDescriptionToTypeScriptType(o, paths)
         )
@@ -189,6 +203,27 @@ async function buildTypingFilesTree(
 
 function format(content: string) {
   return prettier.format(content, { parser: "typescript" });
+}
+
+/**
+ * Gets full event type list from the Open API spec
+ */
+async function getOpenApiEventTypeList(): Promise<string[]> {
+  const spec = await axios.get(
+    "https://raw.githubusercontent.com/stripe/openapi/master/openapi/spec3.json"
+  );
+  const events: string[] =
+    spec.data.paths["/v1/webhook_endpoints"].post.requestBody.content[
+      "application/x-www-form-urlencoded"
+    ].schema.properties.enabled_events.items.enum;
+
+  // Remove wildcard
+  const wildcardIndex = events.findIndex((e) => e === "*");
+  if (wildcardIndex !== -1) {
+    events.splice(wildcardIndex, 1);
+  }
+
+  return events;
 }
 
 /**

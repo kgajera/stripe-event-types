@@ -28,14 +28,15 @@
     "README.md"
   ],
   "devDependencies": {
-    "@types/lodash": "^4.14.184",
+    "@types/lodash": "^4.14.191",
     "@types/prettier": "^2.7.0",
+    "axios": "^1.3.2",
     "lodash": "^4.17.21",
-    "prettier": "^2.7.1",
-    "puppeteer": "^16.2.0",
-    "stripe": "^11.8.0",
-    "tsx": "^3.12.2",
-    "typescript": "^4.7.4"
+    "prettier": "^2.8.4",
+    "puppeteer": "^19.6.3",
+    "stripe": "^11.9.0",
+    "tsx": "^3.12.3",
+    "typescript": "^4.9.5"
   },
   "peerDependencies": {
     "stripe": ">=10.0.0"
