@@ -198,6 +198,7 @@ declare module "stripe" {
         | "payout.created"
         | "payout.failed"
         | "payout.paid"
+        | "payout.reconciliation_completed"
         | "payout.updated"
         | "person.created"
         | "person.deleted"
@@ -592,6 +593,7 @@ declare module "stripe" {
           | "payout.created"
           | "payout.failed"
           | "payout.paid"
+          | "payout.reconciliation_completed"
           | "payout.updated";
         data: DiscriminatedEvent.Data<Stripe.Payout>;
       }
