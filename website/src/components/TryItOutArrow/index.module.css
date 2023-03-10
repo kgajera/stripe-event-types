@@ -1,0 +1,7 @@
+.tryItOutArrow {
+  rotate: 190deg;
+}
+
+.tryItOutArrowPath {
+  fill: var(--ifm-color-primary);
+}

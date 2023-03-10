@@ -1,0 +1,45 @@
+.heroButtons {
+  align-items: center;
+  display: flex;
+  gap: 20px;
+}
+
+.hero code {
+  background-color: transparent;
+  font-size: 80%;
+}
+
+.installCommandRow {
+  text-align: center;
+}
+
+.installCommand {
+  font-size: 18px;
+  user-select: all;
+}
+
+
+@media screen and (max-width: 996px) {
+  .installCommand {
+    font-size: 15px;
+  }
+}
+
+.tryItOutRow {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.tryItOutText {
+  font-size: 19px;
+  font-weight: 500;
+  margin-top: -10px;
+}
+
+@media only screen and (max-width: 768px) {
+  .githubButton {
+    display: none;
+  }
+}
