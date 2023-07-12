@@ -1,4 +1,3 @@
-import axios from "axios";
 import fs from "fs";
 import _ from "lodash";
 import path from "path";
@@ -209,11 +208,13 @@ function format(content: string) {
  * Gets full event type list from the Open API spec
  */
 async function getOpenApiEventTypeList(): Promise<string[]> {
-  const spec = await axios.get(
+  const res = await fetch(
     "https://raw.githubusercontent.com/stripe/openapi/master/openapi/spec3.json"
   );
+  const data = await res.json();
+
   const events: string[] =
-    spec.data.paths["/v1/webhook_endpoints"].post.requestBody.content[
+    data.paths["/v1/webhook_endpoints"].post.requestBody.content[
       "application/x-www-form-urlencoded"
     ].schema.properties.enabled_events.items.enum;
 

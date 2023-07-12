@@ -30,7 +30,6 @@
   "devDependencies": {
     "@types/lodash": "^4.14.191",
     "@types/prettier": "^2.7.0",
-    "axios": "^1.3.2",
     "lodash": "^4.17.21",
     "prettier": "^2.8.4",
     "puppeteer": "^19.6.3",
