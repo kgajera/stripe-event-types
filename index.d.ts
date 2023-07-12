@@ -58,6 +58,7 @@ declare module "stripe" {
       | DiscriminatedEvent.SourceEvent
       | DiscriminatedEvent.SubscriptionScheduleEvent
       | DiscriminatedEvent.TaxRateEvent
+      | DiscriminatedEvent.TaxSettingsEvent
       | DiscriminatedEvent.TerminalReaderEvent
       | DiscriminatedEvent.TestHelpersTestClockEvent
       | DiscriminatedEvent.TopupEvent
@@ -255,6 +256,7 @@ declare module "stripe" {
         | "subscription_schedule.updated"
         | "tax_rate.created"
         | "tax_rate.updated"
+        | "tax.settings.updated"
         | "terminal.reader.action_failed"
         | "terminal.reader.action_succeeded"
         | "test_helpers.test_clock.advancing"
@@ -714,6 +716,11 @@ declare module "stripe" {
       interface TaxRateEvent extends Stripe.Event {
         type: "tax_rate.created" | "tax_rate.updated";
         data: DiscriminatedEvent.Data<Stripe.TaxRate>;
+      }
+
+      interface TaxSettingsEvent extends Stripe.Event {
+        type: "tax.settings.updated";
+        data: DiscriminatedEvent.Data<Stripe.Event.Data>;
       }
 
       interface TerminalReaderEvent extends Stripe.Event {
