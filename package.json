@@ -1,6 +1,6 @@
 {
   "name": "stripe-event-types",
-  "version": "2.4.0",
+  "version": "3.0.0",
   "description": "TypeScript typings for Stripe webhook events",
   "keywords": [
     "stripe"
