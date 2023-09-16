@@ -164,7 +164,6 @@ declare module "stripe" {
         | "invoice.voided"
         | "invoiceitem.created"
         | "invoiceitem.deleted"
-        | "invoiceitem.updated"
         | "issuing_authorization.created"
         | "issuing_authorization.request"
         | "issuing_authorization.updated"
@@ -512,10 +511,7 @@ declare module "stripe" {
       }
 
       interface InvoiceitemEvent extends Stripe.Event {
-        type:
-          | "invoiceitem.created"
-          | "invoiceitem.deleted"
-          | "invoiceitem.updated";
+        type: "invoiceitem.created" | "invoiceitem.deleted";
         data: DiscriminatedEvent.Data<Stripe.InvoiceItem>;
       }
 
@@ -720,7 +716,7 @@ declare module "stripe" {
 
       interface TaxSettingsEvent extends Stripe.Event {
         type: "tax.settings.updated";
-        data: DiscriminatedEvent.Data<Stripe.Event.Data>;
+        data: DiscriminatedEvent.Data<Stripe.Tax.Settings>;
       }
 
       interface TerminalReaderEvent extends Stripe.Event {
