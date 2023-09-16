@@ -38,13 +38,13 @@ const fullEventTypeList = await getOpenApiEventTypeList();
 const unscrapedEvents = _.pullAllWith(
   fullEventTypeList,
   scrapedEvents,
-  (a, b) => a == b.type
+  (a, b) => a == b.type,
 );
 scrapedEvents.push(
   ...unscrapedEvents.map((type) => ({
     type,
     objectTypes: [],
-  }))
+  })),
 );
 
 const eventTree = buildEventTree(scrapedEvents);
@@ -52,7 +52,7 @@ const flatTree = buildFlatEventTree(eventTree);
 
 await fs.promises.writeFile(
   path.join("index.d.ts"),
-  format(`
+  await format(`
     declare module "stripe" {
       namespace Stripe {
         type DiscriminatedEvent = ${Object.keys(flatTree)
@@ -80,18 +80,18 @@ await fs.promises.writeFile(
           ${Object.keys(flatTree)
             .map(
               (
-                e
+                e,
               ) => `interface ${flatTree[e].interfaceName} extends Stripe.Event {
               type: ${flatTree[e].eventType}
               data: DiscriminatedEvent.Data<${flatTree[e].objectType}>
-            }`
+            }`,
             )
             .join("\n\n")}
 
         }
       }
     }
-  `)
+  `),
 );
 
 /**
@@ -146,7 +146,7 @@ function buildFlatEventTree(tree: EventTree, paths: string[] = []): FlatTree {
     } else {
       Object.assign(
         flatTree,
-        buildFlatEventTree(tree[key] as EventTree, [...paths, key])
+        buildFlatEventTree(tree[key] as EventTree, [...paths, key]),
       );
     }
   }
@@ -157,7 +157,7 @@ function buildFlatEventTree(tree: EventTree, paths: string[] = []): FlatTree {
     flatTree[eventPrefix] = {
       objectType: (objectTypes.length ? objectTypes : [paths[0]])
         .map((o: string) =>
-          translateObjectDescriptionToTypeScriptType(o, paths)
+          translateObjectDescriptionToTypeScriptType(o, paths),
         )
         .join(" | "),
       eventType: leafNames
@@ -175,7 +175,7 @@ function buildFlatEventTree(tree: EventTree, paths: string[] = []): FlatTree {
  */
 async function buildTypingFilesTree(
   paths?: string[],
-  dirPath: string = TYPES_DIR
+  dirPath: string = TYPES_DIR,
 ): Promise<TypingTree> {
   const tree: TypingTree = {};
 
@@ -192,7 +192,7 @@ async function buildTypingFilesTree(
       const nextPath = `${dirPath}/${p}`;
       tree[p] = await buildTypingFilesTree(
         await fs.promises.readdir(nextPath),
-        nextPath
+        nextPath,
       );
     }
   }
@@ -209,7 +209,7 @@ function format(content: string) {
  */
 async function getOpenApiEventTypeList(): Promise<string[]> {
   const res = await fetch(
-    "https://raw.githubusercontent.com/stripe/openapi/master/openapi/spec3.json"
+    "https://raw.githubusercontent.com/stripe/openapi/master/openapi/spec3.json",
   );
   const data = await res.json();
 
@@ -241,7 +241,7 @@ async function getOpenApiEventTypeList(): Promise<string[]> {
  */
 function translateObjectDescriptionToTypeScriptType(
   objectDescription: string,
-  paths: string[] = []
+  paths: string[] = [],
 ): string {
   // The event `object` type is a string, for example "application"
   if (objectDescription.match(/^"/)) {
@@ -261,7 +261,7 @@ function translateObjectDescriptionToTypeScriptType(
   function traverseTypings(
     typings = typingsTree,
     maybeType = objectDescription.replace(/\s+/g, ""),
-    typeParents: string[] = []
+    typeParents: string[] = [],
   ): string {
     for (const file of Object.keys(typings)) {
       const fileRegex = new RegExp(`^(${maybeType})(s|es|)?\.d\.ts$`, "i");
@@ -293,7 +293,7 @@ function translateObjectDescriptionToTypeScriptType(
  * Scrape all event types from the Stripe's API docs
  */
 async function scrapeEvents(): Promise<StripeDocsEventScrape[]> {
-  const browser = await launch();
+  const browser = await launch({ headless: "new" });
   const page = await browser.newPage();
   await page.goto("https://stripe.com/docs/api/events/types");
 
@@ -303,14 +303,14 @@ async function scrapeEvents(): Promise<StripeDocsEventScrape[]> {
       document.querySelectorAll("#event_types li.method-list-item"),
       (element) => {
         const detailElement = element.querySelector(
-          ".method-list-item-label-details"
+          ".method-list-item-label-details",
         );
         let objectTypes: string[] = [];
 
         if (detailElement) {
           objectTypes = Array.from(
             detailElement.querySelectorAll(".docs-link"),
-            (e) => e.textContent
+            (e) => e.textContent,
           ) as string[];
 
           if (!objectTypes.length) {
@@ -328,8 +328,8 @@ async function scrapeEvents(): Promise<StripeDocsEventScrape[]> {
               ?.textContent || "",
           objectTypes,
         };
-      }
-    )
+      },
+    ),
   );
 
   await browser.close();
