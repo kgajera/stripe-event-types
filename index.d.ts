@@ -34,7 +34,6 @@ declare module "stripe" {
       | DiscriminatedEvent.IssuingDisputeEvent
       | DiscriminatedEvent.IssuingTransactionEvent
       | DiscriminatedEvent.MandateEvent
-      | DiscriminatedEvent.OrderEvent
       | DiscriminatedEvent.PaymentIntentEvent
       | DiscriminatedEvent.PaymentLinkEvent
       | DiscriminatedEvent.PaymentMethodEvent
@@ -46,14 +45,12 @@ declare module "stripe" {
       | DiscriminatedEvent.PromotionCodeEvent
       | DiscriminatedEvent.QuoteEvent
       | DiscriminatedEvent.RadarEarlyFraudWarningEvent
-      | DiscriminatedEvent.RecipientEvent
       | DiscriminatedEvent.RefundEvent
       | DiscriminatedEvent.ReportingReportRunEvent
       | DiscriminatedEvent.ReportingReportTypeEvent
       | DiscriminatedEvent.ReviewEvent
       | DiscriminatedEvent.SetupIntentEvent
       | DiscriminatedEvent.SigmaScheduledQueryRunEvent
-      | DiscriminatedEvent.SkuEvent
       | DiscriminatedEvent.SourceTransactionEvent
       | DiscriminatedEvent.SourceEvent
       | DiscriminatedEvent.SubscriptionScheduleEvent
@@ -179,7 +176,6 @@ declare module "stripe" {
         | "issuing_transaction.created"
         | "issuing_transaction.updated"
         | "mandate.updated"
-        | "order.created"
         | "payment_intent.amount_capturable_updated"
         | "payment_intent.canceled"
         | "payment_intent.created"
@@ -220,9 +216,6 @@ declare module "stripe" {
         | "quote.finalized"
         | "radar.early_fraud_warning.created"
         | "radar.early_fraud_warning.updated"
-        | "recipient.created"
-        | "recipient.deleted"
-        | "recipient.updated"
         | "refund.created"
         | "refund.updated"
         | "reporting.report_run.failed"
@@ -236,9 +229,6 @@ declare module "stripe" {
         | "setup_intent.setup_failed"
         | "setup_intent.succeeded"
         | "sigma.scheduled_query_run.created"
-        | "sku.created"
-        | "sku.deleted"
-        | "sku.updated"
         | "source.canceled"
         | "source.chargeable"
         | "source.failed"
@@ -553,11 +543,6 @@ declare module "stripe" {
         data: DiscriminatedEvent.Data<Stripe.Mandate>;
       }
 
-      interface OrderEvent extends Stripe.Event {
-        type: "order.created";
-        data: DiscriminatedEvent.Data<Stripe.Event.Data>;
-      }
-
       interface PaymentIntentEvent extends Stripe.Event {
         type:
           | "payment_intent.amount_capturable_updated"
@@ -637,11 +622,6 @@ declare module "stripe" {
         data: DiscriminatedEvent.Data<Stripe.Radar.EarlyFraudWarning>;
       }
 
-      interface RecipientEvent extends Stripe.Event {
-        type: "recipient.created" | "recipient.deleted" | "recipient.updated";
-        data: DiscriminatedEvent.Data<Stripe.Event.Data>;
-      }
-
       interface RefundEvent extends Stripe.Event {
         type: "refund.created" | "refund.updated";
         data: DiscriminatedEvent.Data<Stripe.Refund>;
@@ -675,11 +655,6 @@ declare module "stripe" {
       interface SigmaScheduledQueryRunEvent extends Stripe.Event {
         type: "sigma.scheduled_query_run.created";
         data: DiscriminatedEvent.Data<Stripe.Sigma.ScheduledQueryRun>;
-      }
-
-      interface SkuEvent extends Stripe.Event {
-        type: "sku.created" | "sku.deleted" | "sku.updated";
-        data: DiscriminatedEvent.Data<Stripe.Event.Data>;
       }
 
       interface SourceTransactionEvent extends Stripe.Event {
