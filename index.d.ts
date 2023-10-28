@@ -32,6 +32,7 @@ declare module "stripe" {
       | DiscriminatedEvent.IssuingCardEvent
       | DiscriminatedEvent.IssuingCardholderEvent
       | DiscriminatedEvent.IssuingDisputeEvent
+      | DiscriminatedEvent.IssuingTokenEvent
       | DiscriminatedEvent.IssuingTransactionEvent
       | DiscriminatedEvent.MandateEvent
       | DiscriminatedEvent.PaymentIntentEvent
@@ -173,6 +174,8 @@ declare module "stripe" {
         | "issuing_dispute.funds_reinstated"
         | "issuing_dispute.submitted"
         | "issuing_dispute.updated"
+        | "issuing_token.created"
+        | "issuing_token.updated"
         | "issuing_transaction.created"
         | "issuing_transaction.updated"
         | "mandate.updated"
@@ -531,6 +534,11 @@ declare module "stripe" {
           | "issuing_dispute.submitted"
           | "issuing_dispute.updated";
         data: DiscriminatedEvent.Data<Stripe.Issuing.Dispute>;
+      }
+
+      interface IssuingTokenEvent extends Stripe.Event {
+        type: "issuing_token.created" | "issuing_token.updated";
+        data: DiscriminatedEvent.Data<Stripe.Event.Data>;
       }
 
       interface IssuingTransactionEvent extends Stripe.Event {
