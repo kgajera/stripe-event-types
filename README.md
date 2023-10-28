@@ -21,9 +21,12 @@ yarn add stripe-event-types
 
 ### Version compatability
 
+> **Note**
+> If you are using `stripe` version [13.11](https://github.com/stripe/stripe-node/releases/tag/v13.11.0) or greater, you don't need the `stripe-event-types` library because the typings have been added to the `stripe` library.
+
 | `stripe-event-types` version | `stripe` version |
 | ---------------------------- | ---------------- |
-| 3                            | 13.5             |
+| 3                            | 13.5 - 13.10     |
 | 2                            | 11               |
 | 1                            | 10               |
 
